@@ -30,7 +30,7 @@
 URxvt*termName: screen-256color
 
 !! Font & Lettering
-URxvt.font: xft:Droid Sans Mono:style=Regular:antialias=true:pixelsize=14
+URxvt.font: xft:JetBrainsMono NL:style=Regular:antialias=true:pixelsize=14
 URxvt.letterSpace: 0
 URxvt.lineSpace: 0
 URxvt.geometry: 92x94

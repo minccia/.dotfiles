@@ -38,14 +38,14 @@ import qualified Data.Map        as M
 -------------------------------------------------------------------------------
 --
 myTerminal      = "urxvt"
-myFont          = "xft:Droid Sans Mono:pixelsize=12:antialias=true:hinting=true"
+myFont          = "xft:JetBrainsMonoNL:pixelsize:12:antialias=true:hinting=true"
 myModMask       =  mod4Mask
 
 -------------------------------------------------------------------------------
 -------------------------BORDERS-----------------------------------------------
 -------------------------------------------------------------------------------
 
-myBorderWidth         =  3
+myBorderWidth         =  2
 myNormalBorderColor   =  "#666c7c"
 myFocusedBorderColor  = "#999ab2"
 
