@@ -1,0 +1,39 @@
+Config { font = "xft:Cozette:pixelsize=12:antialias=true:hinting=true"
+       , additionalFonts = [ "xft:mononoki-Regular Nerd Font Complete:pixelsize=11:antialias=true:hinting=true" ]
+       , borderColor = "#1A1B26"
+       , border = TopB
+       , bgColor = "#1A1B26"
+       , fgColor = "#ecefe9"
+       , alpha = 255
+       , position = Bottom
+       , textOffset = -1
+       , iconOffset = -1
+       , lowerOnStart = True
+       , pickBroadest = False
+       , persistent = False
+       , hideOnStart = False
+       , iconRoot = "/home/dulis/.xmonad/xpm/" -- default: "."
+       , allDesktops = True
+       , overrideRedirect = False
+       , commands = [ Run Weather "EGPF" ["-t","<station>: <tempC>C",
+                                          "-L","18","-H","25",
+                                          "--normal","green",
+                                          "--high","red",
+                                          "--low","lightblue"] 36000
+                    , Run Network "wlp2s0" ["-L","0","-H","32",
+                                          "--normal","green","--high","red"] 10
+                    , Run Network "eth1" ["-L","0","-H","32",
+                                          "--normal","green","--high","red"] 10
+                    , Run Cpu ["-L","3","-H","50",
+                               "--normal","#0a0a15","--high","red"] 10
+                    , Run Memory ["-t","Mem: <usedratio>%"] 10
+                    , Run Swap [] 10
+                    , Run Com "uname" ["-s","-r"] "" 36000
+                    , Run Date "%A %_d %B %Y %H:%M" "date" 10
+                    , Run Battery ["-t","Battery: <left>% ","-L","30","-H","60","-h","#ecefe9","-n","#ecefe9","-l","#ecefe9"] 10
+-- in order: green, yellow and red
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = " <icon=nixicon.xpm/>  %battery%}\
+                   \{ <fc=#ecefe9>%date% </fc>"
