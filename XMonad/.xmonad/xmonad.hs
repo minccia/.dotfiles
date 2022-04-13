@@ -265,12 +265,15 @@ myLayout = avoidStruts (stoppable tiled ||| stoppable Full)
 -- > xprop | grep WM_CLASS
 
 myManageHook = composeAll [
-            manageDocks,
+      manageDocks,
             isFullscreen --> doFullFloat,
             className =? "Org.gnome.Nautilus" --> doFloat,
             className =? "Shutter"            --> doFloat,
-            className =? "leagueclientux.exe" --> doFloat
-                          ]
+            className =? "leagueclientux.exe" --> doFloat,
+            className =? "Lutris"             --> doFloat
+                                                            ]
+                                                            
+             
 
 -------------------------------------------------------------------------------
 -------------------------EVENT HANDLING----------------------------------------
@@ -301,7 +304,12 @@ myStartupHook = do
          spawnOnce "picom -b &" -- Picom composite manager
          
          spawnOnce "urxvtd -q -o -f &" --urxvt daemon for better performance
-
+         
+         spawnOnce "xrandr --output eDP-1 --brightness 0.50" --Set default screen brightness
+         
+         spawnOnce "xinput set-prop 12 348 0"
+                                              -- Fix keyboard and touchpad tapping with xinput
+         spawnOnce "xinput set-prop 12 340 1"
 
 -------------------------------------------------------------------------------
 -------------------------END OF FILE-------------------------------------------
