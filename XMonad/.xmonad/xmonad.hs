@@ -2,14 +2,12 @@
 -------------------------IMPORTS-----------------------------------------------
 -------------------------------------------------------------------------------
 
-
 -- Base XMonad Imports
 import XMonad
 import Data.Monoid
 import System.Exit
 
 -- Window Manipulation
-
 import XMonad.Actions.CycleWS
 import XMonad.Actions.WindowBringer
 import XMonad.Actions.RotSlaves
@@ -21,10 +19,10 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.DynamicLog
 
 -- XMonad Layout Imports
-
 import XMonad.Layout.Spacing
---import XMonad.Actions.UpdatePointer
 import XMonad.Layout.Stoppable
+import XMonad.Layout.Renamed 
+import qualified XMonad.Layout.NoBorders as BO 
 
 -- XMonad Config Imports
 import XMonad.Util.SpawnOnce
@@ -34,9 +32,9 @@ import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
 -------------------------------------------------------------------------------
--------------------------DEFAULT TERMS-----------------------------------------
+-------------------------VARIABLES-----------------------------------------
 -------------------------------------------------------------------------------
---
+
 myTerminal      = "urxvt"
 myFont          = "xft:JetBrainsMonoNL:pixelsize:12:antialias=true:hinting=true"
 myModMask       =  mod4Mask
@@ -53,24 +51,13 @@ myFocusedBorderColor  = "#999ab2"
 -------------------------MISCELLANEOUS-----------------------------------------
 -------------------------------------------------------------------------------
 
--- Whether focus follows the mouse pointer.
-
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = False
 
--- Whether clicking on a window to focus also passes the click to the window
---
 myClickJustFocuses :: Bool
 myClickJustFocuses = True
 
--- Strings can be used to define workspaces names
--- A tagging example:
-
--- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
-
 myWorkspaces    = ["1","2","3","4","5"]
-
--- Setting up Non-numeric num pad keys, sorted by number
 
 numPadKeys = [ xK_KP_End,  xK_KP_Down,  xK_KP_Page_Down,  -- 1, 2, 3
                
@@ -83,8 +70,6 @@ numPadKeys = [ xK_KP_End,  xK_KP_Down,  xK_KP_Page_Down,  -- 1, 2, 3
 -------------------------------------------------------------------------------
 -------------------------KEYBINDINGS-------------------------------------------
 -------------------------------------------------------------------------------
-
--- Key bindings. Add, modify or remove key bindings here.
 
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
@@ -243,10 +228,12 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -------------------------LAYOUTS-----------------------------------------------
 -------------------------------------------------------------------------------
 
-myLayout = avoidStruts (stoppable tiled ||| stoppable Full)
+myLayout = BO.lessBorders BO.Never $ avoidStruts (stoppable tiled ||| stoppable Full)
   where
      -- default tiling algorithm partitions the screen into two panes
      tiled   = spacingRaw True (Border 0 3 3 3) True (Border 3 3 3 3) True $ Tall nmaster delta ratio
+     full = renamed [Replace "Full"]
+          $ BO.noBorders(Full)
 
      -- The default number of windows in the master pane
      nmaster = 1
@@ -268,9 +255,10 @@ myManageHook = composeAll [
       manageDocks,
             isFullscreen --> doFullFloat,
             className =? "Org.gnome.Nautilus" --> doFloat,
-            className =? "Shutter"            --> doFloat,
+            className =? "Firefox"            --> doFullFloat,
             className =? "leagueclientux.exe" --> doFloat,
             className =? "Lutris"             --> doFloat
+
                                                             ]
                                                             
              
@@ -298,17 +286,10 @@ myLogHook = dynamicLog
 myStartupHook = do
 
          spawnPipe "feh --bg-fill ~/stuff/wallpapers/* &" -- Set background with feh 
-
-         spawnOnce "picom --config ~/.config/picom/picom.sample.conf &" -- Set picom config file
-
-         spawnOnce "picom -b &" -- Picom composite manager
-         
          spawnOnce "urxvtd -q -o -f &" --urxvt daemon for better performance
-         
+         spawnPipe "source ~/.config/zsh/.zshrc"
          spawnOnce "xrandr --output eDP-1 --brightness 0.50" --Set default screen brightness
-         
-         spawnOnce "xinput set-prop 12 348 0"
-                                              -- Fix keyboard and touchpad tapping with xinput
+         spawnOnce "xinput set-prop 12 348 0" -- Fix keyboard and touchpad tapping with xinput
          spawnOnce "xinput set-prop 12 340 1"
 
 -------------------------------------------------------------------------------
