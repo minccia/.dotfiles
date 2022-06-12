@@ -18,7 +18,7 @@
 *.color15: #ECEFF4
 
 *.foreground: #ecefe9
-*.background: #1A1B26
+*.background: #28292a
 *.cursorColor: #D8DEE9
 *fading: 2
 *fadecolor: #1A1B26
@@ -54,6 +54,8 @@ URxvt*scrollWithBuffer: false
 
 Xcursor.theme: McMojave-cursors
 
+urxvt*transparent: true 
+urxvt*shading: 30 
 !! Common Keybindings
 
 URxvt.keysym.Shift-Up: command:\033]720;1\007

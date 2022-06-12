@@ -5,6 +5,7 @@
 -- Base XMonad Imports
 import XMonad
 import Data.Monoid
+import Data.Ratio
 import System.Exit
 
 -- Window Manipulation
@@ -35,7 +36,7 @@ import qualified Data.Map        as M
 -------------------------VARIABLES-----------------------------------------
 -------------------------------------------------------------------------------
 
-myTerminal      = "urxvt"
+myTerminal      = "urxvtc"
 myFont          = "xft:JetBrainsMonoNL:pixelsize:12:antialias=true:hinting=true"
 myModMask       =  mod4Mask
 
@@ -75,15 +76,17 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- launch a terminal
     [ ((modm,               xK_Return), spawn $ XMonad.terminal conf)
-
+    
     -- launch dmenu
-    , ((modm,               xK_space   ), spawn "dmenu_run -fn 'Cozette-10' -nb '#2e303e' -nf '#ecefe9' -sb '#3c3c4c' -sf '#ecefe9' &")
+    , ((modm,               xK_space   ), spawn "dmenu_run -fn 'Cozette-10' -nb '#0c0c0d' -nf '#ecefe9' -sb '#3c3c4c' -sf '#ecefe9' &")
 
     -- launch gmrun
     , ((modm .|. shiftMask, xK_i     ), spawn "gmrun")
 
     -- close focused window
     , ((modm,               xK_c    ), kill)
+
+    , ((modm .|. shiftMask, xK_c), spawn "xkill")
 
      -- Rotate through the available layout algorithms
     , ((modm,               xK_KP_Right ), sendMessage NextLayout)
@@ -160,7 +163,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
    , ((0, xK_Print ), spawn "scrot '%Y-%m-%d-%S_$wx$h.png' -e 'mv $f ~/Pictures/' ")
 
    -- Launch VsCode 
-   , ((modm,          xK_b ), spawn "code .")
+   , ((modm,          xK_b ), sendMessage ToggleStruts)
 
    -- Dmenu Script to Logout, Shutdown, Reboot or Lock Screen
    , ((modm,          xK_y ), spawn "dm-logout")
@@ -257,8 +260,8 @@ myManageHook = composeAll [
             className =? "Org.gnome.Nautilus" --> doFloat,
             className =? "Firefox"            --> doFullFloat,
             className =? "leagueclientux.exe" --> doFloat,
-            className =? "Lutris"             --> doFloat
-
+            className =? "Lutris"             --> doFloat,
+            className =? "URxvt"              --> doRectFloat (W.RationalRect (1 % 4) (1 % 4) (1 % 2) (1 % 2))
                                                             ]
                                                             
              
@@ -285,13 +288,13 @@ myLogHook = dynamicLog
 --
 myStartupHook = do
 
-         spawnPipe "feh --bg-fill ~/stuff/wallpapers/* &" -- Set background with feh 
+         spawnPipe "feh --bg-fill ~/stuff/wallpapers/flowers.png &" -- Set background with feh 
+         spawnOnce "picom -b &"
          spawnOnce "urxvtd -q -o -f &" --urxvt daemon for better performance
-         spawnPipe "source ~/.config/zsh/.zshrc"
+         spawnOnce "source ~/.config/zsh/.zshrc"
          spawnOnce "xrandr --output eDP-1 --brightness 0.50" --Set default screen brightness
          spawnOnce "xinput set-prop 12 348 0" -- Fix keyboard and touchpad tapping with xinput
          spawnOnce "xinput set-prop 12 340 1"
-
 -------------------------------------------------------------------------------
 -------------------------END OF FILE-------------------------------------------
 -------------------------------------------------------------------------------
@@ -302,7 +305,7 @@ myStartupHook = do
 --
 main = do
   xmproc <- spawnPipe "xmobar -x 0 /home/dulis/.config/xmobar/xmobarrc"
-  xmonad $ docks defaults
+  xmonad $ docks defaults 
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will

@@ -1,8 +1,8 @@
 Config { font = "xft:Cozette:pixelsize=12:antialias=true:hinting=true"
        , additionalFonts = [ "xft:mononoki-Regular Nerd Font Complete:pixelsize=11:antialias=true:hinting=true" ]
-       , borderColor = "#1A1B26"
+       , borderColor = "#0c0c0d"
        , border = TopB
-       , bgColor = "#1A1B26"
+       , bgColor = "#0c0c0d"
        , fgColor = "#ecefe9"
        , alpha = 255
        , position = Bottom
@@ -35,5 +35,5 @@ Config { font = "xft:Cozette:pixelsize=12:antialias=true:hinting=true"
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " <icon=nixicon.xpm/>  %battery%}\
+       , template = " %battery%}\
                    \{ <fc=#ecefe9>%date% </fc>"

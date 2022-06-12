@@ -93,12 +93,11 @@ alias zshrc="nvim ~/.zshrc"
 alias ohmy="nvim ~/.oh-my-zsh/oh-my-zsh.sh"
 alias c='clear'
 alias ba='sudo nvim ~/.bashrc'
-alias pi='nvim ~/.config/picom/picom.sample.conf'
 alias vi='nvim'
 alias nv='nvim ~/.config/nvim/init.vim'
 alias xmonad='nvim ~/.xmonad/xmonad.hs'          
-alias xmobar=' nvim ~/.config/xmobar/xmobarrc'
-
+alias xmobar='nvim ~/.config/xmobar/xmobarrc'
+alias xresources='nvim ~/.Xresources'
 # Destroy command history duplicates
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_IGNORE_DUPS
