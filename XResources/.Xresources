@@ -18,7 +18,7 @@
 *.color15: #ECEFF4
 
 *.foreground: #ecefe9
-*.background: #28292a
+*.background: #000000
 *.cursorColor: #D8DEE9
 *fading: 2
 *fadecolor: #1A1B26
@@ -30,13 +30,16 @@
 URxvt*termName: screen-256color
 
 !! Font & Lettering
-URxvt.font: xft:JetBrainsMono NL:style=Regular:antialias=true:pixelsize=14
+URxvt.font: xft:Jetbrains Mono NL:style=Regular:pixelsize=14, \
+            xft:DejaVu Sans Mono:pixelsize=14, \
+            xft:Unifont:pixelsize=14, \
+            -*-unifont-*-*-*-*-*-*-*-*-*-*-*-
 URxvt.letterSpace: 0
 URxvt.lineSpace: 0
 URxvt.geometry: 92x94
 URxvt.internalBorder: 24
 !!URxvt*depth: 1
-URxvt*background: #1A1B26
+URxvt*background: #000000
 URxvt.transparent: false
 
 !! Customization
@@ -52,10 +55,7 @@ URxvt*scrollTtyKeypress: true
 URxvt*scrollWithBuffer: false
 
 
-Xcursor.theme: McMojave-cursors
-
-urxvt*transparent: true 
-urxvt*shading: 30 
+Xcursor.theme: McMojave-cursors 
 !! Common Keybindings
 
 URxvt.keysym.Shift-Up: command:\033]720;1\007

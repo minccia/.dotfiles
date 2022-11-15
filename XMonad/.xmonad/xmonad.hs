@@ -12,12 +12,14 @@ import System.Exit
 import XMonad.Actions.CycleWS
 import XMonad.Actions.WindowBringer
 import XMonad.Actions.RotSlaves
-import XMonad.Hooks.EwmhDesktops
-import XMonad.Hooks.ManageHelpers
+import XMonad.Actions.MouseGestures
 
 -- Xmobar Imports
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.Minimize
+import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.ManageHelpers
 
 -- XMonad Layout Imports
 import XMonad.Layout.Spacing
@@ -45,8 +47,8 @@ myModMask       =  mod4Mask
 -------------------------------------------------------------------------------
 
 myBorderWidth         =  2
-myNormalBorderColor   =  "#666c7c"
-myFocusedBorderColor  = "#999ab2"
+myNormalBorderColor   =  "#000000"
+myFocusedBorderColor  = "#ecefe9"
 
 -------------------------------------------------------------------------------
 -------------------------MISCELLANEOUS-----------------------------------------
@@ -66,7 +68,7 @@ numPadKeys = [ xK_KP_End,  xK_KP_Down,  xK_KP_Page_Down,  -- 1, 2, 3
    
                xK_KP_Home, xK_KP_Up,    xK_KP_Page_Up,    -- 7, 8, 9
 
-               xK_KP_Insert] -- 0 
+               xK_KP_Insert] -- 0
  
 -------------------------------------------------------------------------------
 -------------------------KEYBINDINGS-------------------------------------------
@@ -78,7 +80,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm,               xK_Return), spawn $ XMonad.terminal conf)
     
     -- launch dmenu
-    , ((modm,               xK_space   ), spawn "dmenu_run -fn 'Cozette-10' -nb '#0c0c0d' -nf '#ecefe9' -sb '#3c3c4c' -sf '#ecefe9' &")
+    , ((modm,               xK_space   ), spawn "dmenu_run -fn 'Cozette-10' -nb '#000000' -nf '#ecefe9' -sb '#3c3c4c' -sf '#ecefe9' &")
 
     -- launch gmrun
     , ((modm .|. shiftMask, xK_i     ), spawn "gmrun")
@@ -110,16 +112,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_m     ), windows W.focusMaster  )
 
     -- Swap the focused window and the master window
-    , ((modm,               xK_9), windows W.swapMaster)
-
-    -- Swap the focused window with the next window
-    , ((modm,               xK_KP_End), windows W.swapDown  )
-
-    -- Swap the focused window with the previous window
-    , ((modm,               xK_KP_Down     ), windows W.swapUp    )
+    , ((modm,               xK_9), windows W.swapMaster )
 
     -- Shrink the master area
-    , ((modm,               xK_Down    ), sendMessage Shrink)
+    , ((modm,               xK_Down ), sendMessage Shrink)
 
     -- Expand the master area
     , ((modm,               xK_Up     ), sendMessage Expand)
@@ -162,7 +158,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
    -- Print Whole Screen
    , ((0, xK_Print ), spawn "scrot '%Y-%m-%d-%S_$wx$h.png' -e 'mv $f ~/Pictures/' ")
 
-   -- Launch VsCode 
+   -- Toggle xmobar
    , ((modm,          xK_b ), sendMessage ToggleStruts)
 
    -- Dmenu Script to Logout, Shutdown, Reboot or Lock Screen
@@ -170,7 +166,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
    -- Window Manipulation
    -- Move window to the next workspace
-   , ((modm,          xK_Right ), shiftToNext >> nextWS)
+   , ((modm,          xK_Right), shiftToNext >> nextWS)
 
    -- Move window to the previous workspace
    , ((modm,          xK_Left ), shiftToPrev >> prevWS)
@@ -224,6 +220,9 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm, button3), (\w -> focus w >> mouseResizeWindow w
                                        >> windows W.shiftMaster))
 
+    , ((modm .|. shiftMask, button1), (\w -> shiftToPrev >> prevWS))  
+    
+    , ((modm .|. shiftMask, button3), (\w -> shiftToNext >> nextWS))                                   
     -- you may also bind events to the mouse scroll wheel (button4 and button5)
     ]
 
@@ -288,13 +287,13 @@ myLogHook = dynamicLog
 --
 myStartupHook = do
 
-         spawnPipe "feh --bg-fill ~/stuff/wallpapers/flowers.png &" -- Set background with feh 
+         spawnPipe "feh --bg-fill ~/stuff/wallpapers/black.png &" -- Set background with feh 
          spawnOnce "picom -b &"
-         spawnOnce "urxvtd -q -o -f &" --urxvt daemon for better performance
+         spawnOnce "urxvtd -q -f -o"
+         spawnOnce "nvm use 18.12.0"
          spawnOnce "source ~/.config/zsh/.zshrc"
-         spawnOnce "xrandr --output eDP-1 --brightness 0.50" --Set default screen brightness
-         spawnOnce "xinput set-prop 12 348 0" -- Fix keyboard and touchpad tapping with xinput
-         spawnOnce "xinput set-prop 12 340 1"
+         spawnOnce "xrandr --output eDP-1 --brightness 0.20" --Set default screen brightness
+         spawnOnce "ruby ~/xinput-solver/touchpad.rb"
 -------------------------------------------------------------------------------
 -------------------------END OF FILE-------------------------------------------
 -------------------------------------------------------------------------------
@@ -305,7 +304,7 @@ myStartupHook = do
 --
 main = do
   xmproc <- spawnPipe "xmobar -x 0 /home/dulis/.config/xmobar/xmobarrc"
-  xmonad $ docks defaults 
+  xmonad $ docks defaults
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will

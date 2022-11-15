@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # Path to your oh-my-zsh installation.
 export ZSH="/home/dulis/.oh-my-zsh"
 
@@ -5,7 +12,7 @@ export ZSH="/home/dulis/.oh-my-zsh"
 autoload -U colors && colors
 
 # Set theme
-ZSH_THEME="spaceship"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -93,10 +100,8 @@ alias zshrc="nvim ~/.zshrc"
 alias ohmy="nvim ~/.oh-my-zsh/oh-my-zsh.sh"
 alias c='clear'
 alias ba='sudo nvim ~/.bashrc'
-alias vi='nvim'
-alias nv='nvim ~/.config/nvim/init.vim'
-alias xmonad='nvim ~/.xmonad/xmonad.hs'          
-alias xmobar='nvim ~/.config/xmobar/xmobarrc'
+alias xmonadrc='nvim ~/.xmonad/xmonad.hs'          
+alias xmobarrc='nvim ~/.config/xmobar/xmobarrc'
 alias xresources='nvim ~/.Xresources'
 # Destroy command history duplicates
 setopt HIST_EXPIRE_DUPS_FIRST
@@ -106,3 +111,13 @@ setopt HIST_IGNORE_SPACE
 setopt HIST_FIND_NO_DUPS
 setopt HIST_SAVE_NO_DUPS
 
+
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init - zsh)"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+fpath+=${ZDOTDIR:-~}/.zsh_functions
+
+export NVM_DIR="/home/dulis/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
